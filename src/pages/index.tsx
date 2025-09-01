@@ -5,6 +5,8 @@ export default function Home() {
   const [status, setStatus] = useState<"作業中" | "休憩中">("作業中");
   const [remaining, setRemaining] = useState<string>("--:--");
 
+  const pad = (num: number) => num.toString().padStart(2, "0");
+
   useEffect(() => {
     const update = () => {
       const current = new Date();
@@ -32,11 +34,7 @@ export default function Home() {
 
       const remainingSeconds = 59 - seconds;
       setStatus(newStatus);
-      setRemaining(
-        `${remainingMinutes.toString().padStart(2, "0")}:${remainingSeconds
-          .toString()
-          .padStart(2, "0")}`
-      );
+      setRemaining(`${pad(remainingMinutes)}:${pad(remainingSeconds)}`);
     };
 
     update();
@@ -46,14 +44,15 @@ export default function Home() {
 
   return (
     <div
-      className={`h-screen flex items-center justify-center flex-col ${
+      className={`h-[100dvh] flex items-center justify-center flex-col ${
         status === "作業中" ? "bg-red-500" : "bg-blue-500"
       }`}
     >
       <h1>時報ポモドーロ</h1>
       <p>{status}</p>
       <p>
-        時刻：{now.getHours()}:{now.getMinutes()}:{now.getSeconds()}
+        時刻：{pad(now.getHours())}:{pad(now.getMinutes())}:
+        {pad(now.getSeconds())}
       </p>
       <p>残り：{remaining}</p>
     </div>
